@@ -1,0 +1,115 @@
+I/O流
+	对象流：ObjectInputStream和ObjectOutputStream
+		对象流是过滤流，需要节点流作参数来构造对象，用于直接把对象写入文件和从文件中读取对象。
+		只有实现了Serializable接口的类型的对象才可以被读写，Serializable接口是个标记接口，其中没有定义方法。
+		对象会序列化成一个二进制代码。
+		
+		writeObject(o)、readObject()这两个是对象读写操作时用的方法。
+			Object o = new Object();	
+			FileOutputStream fos=new FileOutputStream("Object.txt");
+			ObjectOutputStream oos=new ObjectOutputStream(fos);
+			oos.writeObject(o);
+			oos.close();
+
+			FileInputStream fis =new FileInputStream("Object.txt");
+			ObjectInputStream ois =new ObjectInputStream(fis);
+			Object o = (Object)ois.readObject();
+			ois.close();
+		
+		transient只能用来修饰属性。表示这个属性在对象序列化时将被忽略。
+			transient int num;
+			表示当我们进行序列化时忽略这个属性。
+
+		注意：
+			对于对象流的操作，在写对象时要一次写入完毕，如果使用追加模式写入，只会读取到上一次写入的对象。使用对象流写入时，会先写入一个头部，然后写入数据，最后加上结束符号，如果使用追加方式写入的话，那就会在结束符号继续向下写入，但是在读取时只会读到结束符为止，以后再次写入的数据就会丢失。
+			包名、类名和属性可以被序列化，方法和构造器不会被序列化的。
+			静态属性不会被序列化的。
+			属性会被递归序列化的，也就是一个类中有引用类型的属性，如果这个属性对应的类实现了Serializable接口，在对象序列化时，也同样会对这个类中的属性进行对象序列化，如果没有实现Serializable接口，则会抛出异常。
+			所有属性必须都是可序列化的，特别是当有些属性本身也是对象的时候，要尤其注意这一点。
+			网络中传递对象必须实现序列化。	
+	
+nio无阻塞的I/O（优化的I/O）	
+	java.nio   定义块
+		Buffer类：一种用于特定的基本类型数据的容器
+			缓冲：就是块，用来存储内容。
+			容量：内存开辟的大小，根据类型的不同，有不同的空间。
+			界限：可用部分，即不应读取或写入的第一个元素的索引。
+			位置：当前指针的位置，从0开始。	
+			容量>=界限>=位置
+				
+			相关方法：
+				int capacity() 
+          				返回此缓冲区的容量。 
+          			int limit() 
+          				返回此缓冲区的界限。 
+          			int position() 
+          				返回此缓冲区的位置。 
+          			Buffer flip() 
+          				相当于截断没有用的空间，然后把指针移向开头，使limit=position,position=0
+          			Buffer position(int newPosition) 
+          				设置此缓冲区的位置。 
+          				
+			当有大的文件需要处理的时候，为了不影响性能建议用直接缓冲。
+			Buffer有直接缓冲和间接缓冲两种。
+			只有ByteBuffer类提供了直接缓冲。使用直接缓冲，不影响程序。其它类想用直接缓冲需要进行转换。
+		
+	java.nio.channels    对块进行读写的通道，类似于以前的流
+		Channel接口：用于 I/O 操作的连接
+		
+		编程步骤：
+			a. 先创建一个I/O流，
+			b. 使用I/O流.getChannel()方法，获得通道，
+			c. 创建大小合适的ByteBUffer，
+			d. 通道的对象.read(buffer)/write(buffer)进行读写，
+			e. 关闭所有的流和通道，
+			f. 如果有多线程并发，可以使用"通道.lock()"获得FileLock对象，用FileLock.release() 释放此锁定。
+			g. 当遇到编码问题，使用CharSet、CharsetDecoder、CharsetEncoder三个类去解决
+			
+		注意：
+			在读之前需要调用一下clear()方法，帮助读操作清理缓冲；写之前需要调用flip()方法，帮助写操作清理缓冲。
+	
+	java.nio.charset    字符集，进行编码解码		
+		Charset类：编码类，编码的信息
+			forName(String charsetName)
+				生成一个CharSet实例。
+			decode(ByteBuffer bb) 
+          			将此 charset 中的字节解码成 Unicode 字符的便捷方法。
+          		encode(CharBuffer cb) 
+          			将此 charset 中的 Unicode 字符编码成字节的便捷方法。
+          			
+		CharsetDecoder类：解码器
+			能够把特定 charset 中的字节序列转换成 16 位 Unicode 字符序列的引擎。
+			
+		CharsetEncoder类：编码器，编码的行为
+			能够把 16 位 Unicode 字符序列转换成特定 charset 中字节序列的引擎。
+
+网络编程：
+	网络基础知识
+		Mac地址：每个网卡专用地址，也是唯一的。
+		端口(port)：应用程序（进程）的标识（网络通信程序）
+			OS中可以有65536（2^16）个端口，进程通过端口交换数据。
+			端口是一种抽象的软件结构，与协议相关：TCP的23端口和UDT的23端口为两个不同的概念。
+			端口应该用1024以上的端口，以下的端口都已经设定功能。
+		协议：为了进行网络中的数据交换而建立的约定，协议是为了保证通信的安全，不同层的协议是完全不同的。
+			TCP协议：传输层的协议，重发一切错误的信息
+			IP协议：保证地址和主机一一对应（ip地址＋网卡地址）
+			
+	TCP编程：
+		TCP是一种面向连接的保证可靠传输的协议。通过TCP协议传输，得到的是一个顺序的无差错的数据流。发送方和接收方的成对的两个socket之间必须建立连接，以便在TCP协议的基础上进行通信，当一个socket（通常都是server socket）等待建立连接时，另一个socket可以要求进行连接，一旦这两个socket连接起来，它们就可以进行双向数据传输，双方都可以进行发送或接收操作。
+			1) 服务器分配一个端口号，服务器使用accept()方法等待客户端的信号，信号一到打开socket连接，从socket中取得OutputStream和InputStream。
+	   		2) 客户端提供主机地址和端口号使用socket端口建立连接，得到OutputStream和InputStream。 
+
+		Server端编码的步骤：
+			1、new ServerSocket 打开端口
+			2、调ServerSocket的accept()等待客户连接，当连接成功返回交互的Socket。
+			3、调用Socket.getInputStream,getOutputStream获得服务器端的IO流
+			4、用处理流封装后与客户端交互，记住你读我写，一读一写。
+			5、关闭单一客户端调用Socket的close(),关闭服务器调ServerSocket的close();
+
+		Socket端编码步骤：
+			1、new Socket(Server ip,Server port)试图连接，如成功才有对象
+			2、调用Socket.getInputStream,getOutputStream获得服务器端的IO流
+			3、用处理流封装后与客户端交互，记住你读我写，一读一写。
+			4、关闭，只有Socket的close()方法。
+
+	

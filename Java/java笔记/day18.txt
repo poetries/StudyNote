@@ -1,0 +1,99 @@
+软件开发流程：
+	1、可行性分析
+	2、需求分析->开发测试
+	3、概要设计->分隔模块，定义框架等
+	4、详细设计->类设计、接口设计
+	5、编码
+	6、测试
+	7、部署
+	8、维护
+	
+单元测试：
+	要求：
+		要有边界值的分析，主要针对分支语句的临界点
+		语句覆盖，保证写的任何语句都要运行到
+		判定覆盖，所有判断的地方都要覆盖掉
+		条件覆盖，保证所有条件都要覆盖掉
+		路径覆盖，所有分支都要测试到
+	
+	步骤：
+		1、针对每个类写一个TestCase，在setUp方法中初始化要测试类，在tearDown方法中将测试类置为null
+		2、逐一编写以test开头的方法
+		3、新建一个套件类，再把所有的TestCase类加入套件类
+		
+Ant：用于对项目的整体构建、修改及部署等操作
+	Ant的下载：
+		去阿帕奇官方网站下载
+		在eclipse的eclipse3.2\plugins\org.apache.ant_1.6.5
+		
+	建立ant的步骤：
+		1、写类：src和build.xml必须自己写，src中的源程序要按照包结构去构建好
+			projectName
+				classes
+				src
+				build.xml
+		2、写build.xml
+			<?xml version="1.0"  encoding="GB2312" ?>
+			
+			<!-- 一个项目,可包含很多任务组(target) -->
+			<project default="main" basedir=".">		
+				<!--属性部分，可以写类似全局变量-->
+				<property name="src" value="src\test" />
+						
+				<!-- 项目中的一个任务组,可包含很多任务(task:javac,java...) -->
+				<target name="main" description="begin build">	
+					<!--创建目录-->		
+					<mkdir dir="classes" />	
+					<!--编译-->
+					<javac srcdir="${src};src" destdir=".\classes"/>		
+					<!--运行-->
+					<java classname="test.Test">
+						<classpath>
+			    				<pathelement path=".\classes"/>
+						</classpath>
+					</java>		
+				</target>
+			
+				<!--清除所有class-->
+				<target name="clean" description="begin clean">
+					<delete dir="classes" />
+				</target>
+				
+				<!--重新建立项目-->
+				<target name="all" depends="clean,main" description="begin all">
+				</target>
+			</project>
+		3、ant配置环境变量
+			Path->org.apache.ant_1.6.5\bin
+			ClassPath->org.apache.ant_1.6.5\lib
+		4、运行	
+		
+创建可运行的jar文件：
+	1、先建起一个空文件夹
+	2、把所有的源文件拷贝到该文件夹下
+	3、javac -d . *  编译此文件夹下各源文件
+	4、删除源文件
+	5、jar -cvf test.jar *  完成第一次打包
+	6、jar -xvf test.jar  解压
+	7、删除test.jar
+	8、改META_INF中的文件，加上Main-Class: MenuFrame （注意中间有空格），保存
+	9、jar -cvfM test.jar *  
+	10、java -jar test.jar 可以运行
+	
+重构：
+	在不改变软件任何功能的前提下对代码进行修改，调整其结构，提高其可读性，降低其修改的成本。	
+	重构的基本思想就是集中精力使设计简化，并且在新的需求出现时提供一个持续发展（而非扩展）的环境。
+	重构是一项功能强大的技术，但需以微小的步伐修改程序才行。	
+	
+	重构的优点：
+		重构可以改进软件的设计； 
+		重构可以使你的代码看起来更易理解；
+		重构可以找出潜伏的Bug； 
+		重构可以帮助你提高编程的速度――在一次次的迭代过程中阻止系统腐败变质，减少在调试中所花的时间； 
+		重构可以使我们更快速的开发软件，甚至还可以提高我们的设计质量。
+	
+	利用eclipse重构代码：
+		代码封装
+		方法移位(父类<->子类)
+		抽取方法
+		提炼接口

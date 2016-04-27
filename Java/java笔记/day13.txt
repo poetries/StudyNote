@@ -1,0 +1,147 @@
+I/O流
+	流的概念：程序与数据来源之间的桥梁
+	
+	流的分类：
+		按数据方向分：输入流和输出流
+			 输入流：InputStream/Reader
+			 OutputStream/Writer
+		按数据类型分：字节流和字符流
+			字节流：InputStream/OutputStream
+			字符流：Reader/Writer
+		按流的功能分：节点流和处理流
+			节点流用操作数据的来源。
+			处理流用来封装节点流，从而给节点流增加一个功能，不能独立存在，在关闭流时如果使用了处理流，只需关闭最外层的流就可以了。
+			区分节点流和处理流的小方法：
+				看构造器，节点流参数为数据来源，而处理流参数为其他流。
+	
+	选择流的思路：
+		先考虑是输入流还是输出流，
+		再考虑是字节流还是字符流，
+		最后考虑是节点流还是处理流。
+		
+	字符流：Reader和Writer所有字符流的父类型
+		Java技术使用Unicode来表示字符串和字符，而且提供16位版本的流，以便用类似的方法处理字符。 
+		如果构造了一个连接到流的Reader和Writer，转换规则会在使用缺省平台所定义的字节编码和Unicode之间切换。 
+		
+	桥梁流：InputStreamReader和OutputStreamWriter（字节流转化成字符流的桥转换器）
+		这两个类不是用于直接输入输出的，他是将字节流转换成字符流的桥转换器，并可以指定编解码方式。
+			
+	逐行读写流：BufferedReader/BufferedWriter
+		以上两个都是过滤流，需要用其他的节点流来作参数构造对象。
+		BufferedReader的方法：readLine():String ，当他的返回值是null时，就表示读取完毕了。要注意，再写入时要注意写换行符，否则会出现阻塞。
+		BufferedWriter的方法：newLine() ，这个方法会写出一个换行符。
+		
+	管道流：线程交互的时候使用
+		PipedInputStream/PipedOutputStream
+			传送输出流可以连接到传送输入流，以创建通信管道。传送输出流是管道的发送端。通常，数据由某个线程写入 PipedOutputStream 对象，并由其他线程从连接的 PipedInputStream 读取。
+		注意：管道输出流和管道输入流需要对接。
+			
+	数据流：DataInputStream和DataOutputStream
+		通过流来读写Java基本类，注意DataInputStream和DataOutputStream的方法是成对的。 
+		支持直接输出输入各种数据类型。
+		注意：使用DataOutputStream/DataInputStream时，要注意写入顺序和读取顺序相同，否则会将没有分割写入的信息分割不正确而读取出错误的数据。
+		
+	Properties类：针对属性文件(*.properties，内容是name=value)进行操作，在java.util包下	
+		load(InputStream inStream) 
+          		从输入流中读取属性列表（键和元素对）。
+          	getProperty(String key) 
+          		用指定的键在此属性列表中搜索属性。
+	
+	java编码方式：
+		编码：把字符转换成数字存储到计算机中，按ASCII将字母映射为整数。
+		解码：把数字从计算机转换成相应的字符的过程。	
+		
+		不同的国家有不同的编码，当编码方式和解码方式不统一时，产生乱码。
+		因为美国最早发展软件，所以每种的编码都向上兼容ASCII 所以英文没有乱码。
+			ASCII（英文）	                1个字符占一个字节（所有的编码集都兼容ASCII）
+			ISO8859-1（拉丁文）  	  1个字符占一个字节
+			GB-2312/GBK        		  1个字符占两个字节（多用于中文）
+			Unicode            		  1个字符占两个字节（网络传输速度慢）
+			UTF-8              		  变长字节，对于英文一个字节，对于汉字两个或三个字节。
+			
+		中文编码时出现乱码的情况：
+			用流操作文件。
+			网页（动态静态）。
+			网络传递消息。
+			
+		解决乱码的方式：
+			String temp = 乱码的字符串
+			temp = new String(temp.getBytes("ISO8859-1") , "GBK")   
+				将temp按照ISO8859-1的方式进行解码生成一个字节序列，然后在按照GBK的方式解码字节序列生成字符串。
+		
+	File类：可表示文件或者目录
+		File下的方法是对磁盘上的文件进行磁盘操作，但是无法读写文件的内容。
+
+		构造器：
+			File(String pathname)	//以文件的路径做参数
+			
+		File类的方法：
+			boolean createNewFile() 
+				创建一个新文件
+			File createTempFile(String prefix, String suffix, File directory) 
+           			在指定目录中创建一个新的空文件，使用给定的前缀和后缀字符串生成其名称。会在前缀和后缀之间加一个随机数 
+			boolean mkdir()
+				创建一个新目录
+			boolean delete()
+				删除文件，删除的是创建File对象时指定与之关联创建的那个文件。
+			String[] List()
+				返回当前File对象下所有显文件和目录名（相对路径）
+			File[] ListFiles()
+				返回当前File对象（必须是目录）下的所有File对象，可以用getName()来访问到文件名。
+			boolean isDirectory()和boolean isFile()
+				判断究竟是目录还是文件。
+			boolean exists() 
+				判断文件或文件夹是否存在。
+			String getPath()
+				获得相对路径。
+			String getAbsolutePath()
+				获得文件的绝对路径
+		
+		注意：
+			File类的对象实施表示一个文件并不是真正的文件，只是一个代理而已，通过这个代理来操作文件
+			创建一个文件对象和创建一个文件在java中是两个不同的概念。前者是在虚拟机中创建了一个文件，但却并没有将它真正地创建到OS的文件系统中，随着虚拟机的关闭，这个创建的对象也就消失了。而创建一个文件才是在系统中真正地建立一个文件。
+			例如：
+				File f=new File(“11.txt”);	//创建一个名为11.txt的文件对象
+				f.CreateNewFile();     	//真正地创建文件
+
+	RandomAccessFile： 
+		允许随机访问文件，类支持直接输出输入各种数据类型。
+		
+		构造器：
+			RandomAccessFile(File file, String mode) 
+          			创建从中读取和向其中写入（可选）的随机存取文件流，该文件由 File 参数指定。 
+			RandomAccessFile(String name, String mode) 
+          			创建从中读取和向其中写入（可选）的随机存取文件流，该文件具有指定名称。 
+				mode( r：以只读方式打开      rw：可读可写，不存在则创建)
+
+		相关方法：
+			long getFilePointer()
+				返回文件指针的当前位置。 
+			void seek(long pos)
+				设置文件指针到给定的绝对位置。 
+			long length()
+				返回文件的长度。			
+				
+	对象流：ObjectInputStream和ObjectOutputStream（实现对象序列化）
+		对象流是过滤流，需要节点流作参数来构造对象，用于直接把对象写入文件和从文件中读取对象。
+		只有实现了Serializable接口的类型的对象才可以被读写，Serializable接口是个标记接口，其中没有定义方法。
+		对象会序列化成一个二进制代码，文件中保存对象的属性。
+		
+		writeObject(o)、readObject()这两个是对象读写操作时用的方法。
+			Object o = new Object();	
+			FileOutputStream fos=new FileOutputStream("Object.txt");
+			ObjectOutputStream oos=new ObjectOutputStream(fos);
+			oos.writeObject(o);
+			oos.close();
+
+			FileInputStream fis =new FileInputStream(“Object.txt”);
+			ObjectInputStream ois =new ObjectInputStream(fis);
+			Object o = (Object)Ois.readObject();
+			ois.close();
+
+		一个类中有其他类型的对象，那么，这个类实现了Serializable接口，在对象序列化时，也同样要求这个类中属性都能够对象序列化（基本类型除外）。
+		
+		注意：
+			对于对象流的操作，在写对象时要一次写入完毕，如果使用追加模式写入，只会读取到上一次写入的对象，使用对象流写入时，会先写入一个头部，然后写入数据，最后加上结束符号，如果使用追加方式写入的话，那就会在结束符号继续向下写入，但是在读取时只会读到结束符为止，以后再次写入的数据就会丢失。
+
+		       

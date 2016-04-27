@@ -1,0 +1,116 @@
+国际化：让世界上每个人都能看懂。
+	Locale类（java.util包下）：包括所有国家、地区、语言
+		存在很多的静态属性，来表示国家、语言
+		三种构造方法：
+			Locale(String language) 
+				根据语言代码构造一个语言环境。 
+			Locale(String language, String country) 
+				根据语言和国家构造一个语言环境。 
+			Locale(String language, String country, String variant) 
+				根据语言、国家和变量构造一个语言环境。 
+		常用方法：
+			Locale getDefault() 
+          			获得此 Java 虚拟机实例的当前默认语言环境值。 
+ 			String getDisplayCountry() 
+          			返回适合向用户显示的语言环境国家名。 
+          		void setDefault(Locale newLocale) 
+          			为此 Java 虚拟机实例设置默认语言环境。 
+			String getLanguage() 
+          			返回此语言环境的语言代码。 
+			String getCountry() 
+          			返回此语言环境的国家/地区代码。 
+          	注意：
+          		国家会兼容语言，但语言不会兼容国家。
+          
+	java.text.*：该包下存在许多格式化类
+          	NumberFormat抽象类：
+          		常用方法：
+          			NumberFormat getInstance() 
+          				返回当前默认语言环境的通用数字格式。 
+				NumberFormat getInstance(Locale inLocale) 
+          				返回指定语言环境的通用数字格式。 
+          			String format(double number) 
+          				根据国家，进行格式规范。
+          			NumberFormat getCurrencyInstance(Locale inLocale) 
+          				返回指定语言环境的货币格式。  
+          				
+          	SimpleDateFormat类：
+          		模式字母：
+				y  年  
+				M  年中的月份  
+				H  一天中的小时数（0-23） 
+				h  am/pm 中的小时数（1-12） 
+				m  小时中的分钟数
+				s  分钟中的秒数  
+			构造器：
+				SimpleDateFormat(String pattern) 
+          				用给定的模式和默认语言环境的日期格式符号构造 SimpleDateFormat。
+			常用方法：
+				String format(Date date) 
+          				将一个 Date 格式化为日期/时间字符串。
+          		注意：
+          			看到相应的模式字母，就会进行转换。
+         
+	实现国际化：
+		1、先写各个语言对应的文字类，使其extends ListResourceBundle，然后重写getContents()，返回一个二维数组。
+		2、在程序中按照Local和ListResourceBundle的baseName来选择对应的资源，调用getString()/getObject()取得value
+			ResourceBundle类：
+				ResourceBundle getBundle(String baseName, Locale locale) 
+					baseName为对应的ListResourceBundle的类名(包名.类名)
+					使用指定的基本名称和语言环境，以及调用方的类加载器获取资源包。 
+		注意：根据key去查找value时，当前没有会去查找默认的，默认的也没有则会抛出异常
+		
+5.0新特性：
+	1、自动装箱，自动解箱(简单类型->对象类型)
+		小于127的数值在自动装箱时只做一次装箱，做" == "时相等。
+		null无法自动解箱。
+		先装箱后赋值和先解箱后赋值时，需要注意是否能够匹配。
+		
+	2、静态import
+		用于导入类中的静态属性和静态方法。
+		格式：import static 包名.类名.属性/方法/*
+		注意：
+			必须是静态的成员。
+			静态导入时，不允许导入同名方法/属性。
+			使用时，可省略" 类名. "就像使用本类方法一样
+			
+	3、增强for循环：for(  :  )
+		方式统一，可以处理数组和集合。		
+		不可以同时对两个以上的集合进行操作。
+		不支持删除元素。
+		
+	4、可变长的参数：(...)
+		用于取代数组，实际上还是按数组进行处理，允许传递非数组的值（0到n个，中间用逗号分隔）。
+		可变长参数只能出现一次，且一定会放在参数列表的最后。
+		作参数时，可变长参数可以不传，但数组不可以。
+		
+	5、格式化输入输出：Scanner类
+		了解下就可以，知道有这个类就OK。
+	
+	6、枚举Enum：本质上也是一个类，具有类所有特性
+		格式：
+			enum 枚举名{ 
+				枚举值1,
+				枚举值2,
+				.....
+			}
+			
+		特性：
+			显示一些同类型的清单。
+			一个枚举值就是一个枚举对象。
+			可以有构造器，但不能是public的。
+			具有一个私有的默认无参的构造器，显式构造后，默认的构造器会消失。
+			属性，方法和类一样。
+			枚举是final的(对于外部无法继承)，但在内部可以去实现。
+		
+		注意：
+			清单里的类，会调用匹配的构造器，如无，则会报错。
+			在枚举中可以有抽象方法，但在清单中的所有子类都必须实现他。
+			如果要写属性和方法，则最后的一个枚举值要以分号结束。
+			枚举中的values()方法会返回枚举中的所有枚举值：  Color[] ss = Color.values();  
+		
+	7、泛型
+
+	8、元数据（注释），项目中推广度一般
+	
+	

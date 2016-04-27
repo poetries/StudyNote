@@ -1,0 +1,158 @@
+反射：
+	反射：在运行时动态分析或使用一个类进行工作。
+	java.lang.Class类：描述类信息的类。
+	类对象：描述一个类信息的对象，当虚拟机加载类的时候，就会创建这个类的类对象并加载该对象，Class是类对象的类型。
+	
+	获得类对象的方式：
+		用" 类名.class "获得这个类的类对象。
+		用类的对象掉用getClass()，如object.getClass()得到这个对象的类型的类对象。
+		可以使用Class.forName(类名)，也可以得到这个类的类对象，（注意，这里写的类名必须是全限定名（全名），是包名加类名，XXX.XXX.XXXX）。
+		基本类型也有类对象，用" 封装类.TYPE "可以获得对应的基本类型的类对象。
+
+	java.lang.reflect包下的三个重要类：
+		Field属性类：用来描述属性的信息。
+		Method方法类：方法的信息的描述。
+		Constructor构造方法类：用来描述构造方法的信息。
+
+	Class类中的常用方法：
+		newInstance() 
+			创建此 Class 对象所表示的类的一个新实例(调用无参构造创建的对象)。
+		getDeclaredMethods()
+			获得的是一个Method方法类对象的数组，获得本类(不包括父类)声明的所有(包括private的)方法对象。
+		getMethods()     //推荐使用
+			获得的是一个Method方法类对象的数组，获得所有(父类的也包括)publice的方法对象。
+		getDeclaredConstructors()
+			获得的是一个Constructor构造方法类对象的数组，获得这个类声明的所有构造方法对象。
+		getConstructors()    //推荐使用
+			获得的是一个Constructor构造方法类对象的数组，获得所有publice的构造方法对象。
+		getDeclaredFields()    //推荐使用
+			获得的是一个Field属性类对象的数组，获得本类声明的所有属性的属性对象。
+		getFields()
+			获得的是一个Field属性类对象的数组，获得所有publice的属性对象。
+			
+	使用反射构造一个类的对象的步骤：
+		a. 获得类对象
+		b. 获得构造方法对象
+		c. 获得对象，用构造方法对象调用构造方法，如果使用无参构造方法，可以跳过第二步，直接使用" 类对象.newInstance() "方法来获得这个类的对象
+		d. 获得方法对象
+		e. 用方法对象调用方法（用这个类的对象作为第一参数）
+		如下面的例子：
+			反射机制的实现类：
+				package day07.reflect;				
+				import java.lang.reflect.Field;
+				import java.lang.reflect.Method;
+				import java.util.HashMap;
+				import java.util.Map;
+				import java.util.Set;			
+				public class TestReflect {					
+					public static Object get(String className , Map<String,Object> map) throws Exception{
+						Class c = Class.forName(className);                  //获得类对象
+						Object o = c.newInstance();                   //获得对象
+						Set<String> set = map.keySet();
+						for(String str : set){
+							String s = "set" + str.substring(0,1).toUpperCase()+str.substring(1);
+							Field f = c.getDeclaredField(str);
+							Method m = c.getMethod(s, f.getType());        //获得方法对象
+							m.invoke(o, map.get(str));                       //用方法对象调用方法
+						}
+						return o;
+					}
+					
+					public static void main(String[] args) throws Exception {	
+						Map m = new HashMap();
+						m.put("name", "zhang");
+						m.put("age", 22);
+						Object o = get("day07.reflect.Student",m);
+						Student s = (Student) o;
+						System.out.println(s.getName() + "   " + s.getAge());
+						
+						Map m1 = new HashMap();
+						m1.put("name", "li");
+						m1.put("gender", "男");
+						Object o1 = get("day07.reflect.Teacher",m1);
+						Teacher t = (Teacher) o1;
+						System.out.println(t.getName() + "    " + t.getGender());
+					}
+				}
+			学生类：
+				package day07.reflect;				
+				public class Student {
+					private String name;				
+					private int age;				
+					public int getAge() {
+						return age;
+					}				
+					public void setAge(int age) {
+						this.age = age;
+					}				
+					public String getName() {
+						return name;
+					}				
+					public void setName(String name) {
+						this.name = name;
+					}
+				}	
+			教师类：
+				package day07.reflect;				
+				public class Teacher {
+					private String name;				
+					private String gender;				
+					public String getGender() {
+						return gender;
+					}				
+					public void setGender(String gender) {
+						this.gender = gender;
+					}						
+					public String getName() {
+						return name;
+					}				
+					public void setName(String name) {
+						this.name = name;
+					}				
+				}
+	
+内部类：
+	定义：
+		定义在另外一个类中的类，就是内部类。
+		编译后生成的两个独立的类：Outer.class 和Outer$Inner.class。
+		
+	内部类的分类：
+		静态内部类：静态内部类定义在类中，任何方法外，用static修饰
+			静态内部类只能访问外部类的静态成员。
+			在外部类的外部，要创建一个静态内部类对象不需要外部类对象：
+				Outer.Inner in = new Outer.Inner();
+			在本类内部生成内部类对象的方式：
+				Inner in = new Inner();	
+	
+		成员内部类：作为外部类的一个成员存在，与外部类的属性、方法并列
+			在内部类中可以直接访问外部类的私有属性。
+			内部类和外部类的实例变量允许命名冲突。
+				在内部类中访问实例变量：this.属性
+				在内部类访问外部类的实例变量：外部类名.this.属性
+			在外部类的外部，要创建一个成员内部类对象，要首先建立一个外部类对象，然后再创建一个成员内部类对象。
+				Outer out = new Outer();
+				Outer.Inner in = out.new Inner();
+			在本类内部生成内部类对象的方式：
+				在静态方法中：Inner in = new Outer().new Inner();
+				在非静态方法中：Inner in = this.new Inner();
+			成员内部类不可以有静态成员，这是因为静态属性是在加载类的时候创建，这个时候内部类还没有被创建。
+				
+		局部内部类：在外部类的方法中定义的内部类
+			与局部变量类似，在局部内部类前不可以加修饰符public和private，其作用域为定义它的代码块。
+			局部内部类不仅可以访问外部类的实例变量，还可以访问外部类的局部变量，但要求外部类的局部变量必须为final的。
+			配合接口使用，来做到强制弱耦合。
+			在外部类的外部不可创建局部内部类对象，只能在局部内部类所在的方法中创建：
+				Inner in = new Inner();
+			
+		匿名内部类：一种特殊的局部内部类
+			没有名字，也没有class、extends、implements关键字
+			用一种隐含的方式实现一个接口或继承一个类，并且只能创建一次实例。
+			实现方式：在某个语句中，new 父类/父接口名字(){ 类体中实现方法 }
+				例如：
+					TreesSet ts = new TreeSet(new Comparator(){
+						public int compare(Object o1, Object o2){
+							return 0;
+						}
+					});
+			匿名内部类属于局部内部类，那么局部内部类的所有限制都对其生效。
+			匿名内部类是唯一一种无构造方法的类，因为构造器的名字必须合类名相同，而匿名内部类没有类名。

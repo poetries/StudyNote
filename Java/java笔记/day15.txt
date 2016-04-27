@@ -1,0 +1,104 @@
+网络编程：
+	多线程+网络：
+		1、服务器端的等待客户连接代码（ while(true) ），服务器端与单个客户端交互的代码放入线程体（ run ）
+		2、客户端如有其他要求，与服务器交互的代码也要放入线程体
+		3、ServerSocket和Socket编码基于TCP/IP协议，重发一切错误数据，当网络不好时会使性能很差
+		4、Server端
+			new ServerSocket启动等待连接线程
+			在accept后启动交互线程
+		注意：交互时注意对应产生，读写流对应和次数对应
+		
+	URL：网址，统一资源定位器
+		常用的构造器：
+			URL(String spec) 
+				spec  一个完整的网址（协议+网址）
+          			根据 String 表示形式创建 URL 对象。
+          			
+	URLConnection：与网址进行连接
+		通过URL的openConnection()方法生成一个URLConnection实例，通过下面两个方法，进行流的操作
+			getInputStream() 
+	          		返回从此打开的连接读取的输入流
+	          	getOutputStream() 
+	          		返回写入到此连接的输出流。
+	          		
+	UDP编程：这种信息传输方式相当于传真，信息打包，在接收端准备纸
+		特点：
+			1、一种无连接协议，速度快
+			2、不保证数据的完整，不会进行重发
+			
+		DatagramSocket和DatagramPacket类：
+			DatagramSocket：此类表示用来发送和接收数据报包的套接字。
+			DatagramPacket：数据报包，是UDP下进行传输数据的单位，数据存放在字节数组中，其中包括了目标地址和端口以及传送的信息。
+				用于接收：	
+					DatagramPacket(byte[] buf , int length)
+				用于发送：	
+					DatagramPacket(byte[] buf , int length , InetAddress address , int port )
+					
+		UDP发送端：
+			1、创建一个DatagramSocket，不需要参数
+			2、创建一个DatagramPacket，指明接收方的IP地址和端口号
+			3、发送数据send(DatagramPacket p)
+			4、关闭DatagramSocket
+
+		UDP接收端：
+			1、创建一个DatagramSocket，指定接收方的IP地址和端口号
+			2、创建一个DatagramPacket，不需要IP地址和端口号
+			3、接收数据receive(DatagramPacket p)
+			4、关闭DatagramSocket
+			
+常用类库：
+	java.lang.*:
+		System 系统
+		Object 对象
+			clone()
+			equals()
+			hashCode()
+			toString()
+		Class  类			
+		String/StringBuffer/StringBuilder  与字符串相关的
+		Thread 线程
+		所有的封装类
+
+	java.util.*:
+		Set--->HashSet,TreeSet	   
+		List--->ArrayList	
+		Map--->HashMap(线程安全，不支持空),HashTable(线程不安全，支持空)
+		Collections--->外同步
+		Properties
+		Date
+		观察者-->Observable,接口Observer
+		数据结构+工具类
+
+	java.sql.*: 后面马上会讲到，JDBC
+	
+	java.awt/swing.*：没什么机会用到
+		
+	java.io.*:  流相当的多
+		File/FilenameFilter
+		Serializable 对象序列化接口
+
+			注意：写一个类要考虑的事情：1、无参构造器，2、实现序列化接口，3、重写equals,hashCode
+		
+		FileInputStream
+		FileOutputStream
+		InputStreamReader
+		PrintStream
+		BufferedReader
+		nio包
+	
+	java.net.*:  以后JSP,Servlet用的时候这个包都已经写好了
+		InetAddress--->IP地址
+		URL----------->网址
+		URLConnection---->连接
+		ServerSocket,Socket----TCP/IP
+		DatagramSocket,DatagramPacket----UDP
+		
+	一些零散的类：
+		Comparable（可比较的）,Comparator（比较器）
+
+		java.math.*;数字在商业软件中应用时找这个包
+			BigDecimal
+		
+		与反射相关的：java.lang.reflect:  用的机会比较少
+					
+		Runtime（运行环境）,Process（进程） ，这两个在java.lang包里，用了这些就不能跨平台了，而且效率低

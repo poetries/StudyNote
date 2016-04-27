@@ -1,0 +1,111 @@
+5.0新特性：
+	泛型：
+		泛型的形式：
+			<E>
+			<E extends 类型>
+			<E extends Numner&comparator>  类名&接口，表示E继承Numner类实现comparator接口
+			<?>  泛型通配符表示任意类型，仅用于传参
+			<? extends 类型>  表示这个类型可以是该类或者该类的子类。
+			<? super 类型>  表示这个类型可以是该类或者该类的父类。			
+			
+		泛型的优点：
+			指定泛型后，取出数据时不需要进行强制类型转换，可以直接赋值给相应类型。
+			可以限定集合中的元素类型，保证集合中的元素是按照要求放入的。	
+			可以增强多态(继承多个接口而无需写继承类)。
+			保证参数有效。
+
+		泛型的局限性：			
+			不能实例化泛型
+				T t = new T(); //error
+			数组不可用泛型限定
+				List<String>[] list = new List<String>[10];	//错误
+				E[] a = new E[10];	//错误
+			类的静态变量不能声明为类的泛型类型
+				public class GenClass<T> {
+				  	private static T t;   //编译错误
+				}
+			静态方法可以是泛型方法(在修饰符和返回值之间写泛型)，但是不可以使用类的泛型。
+				static void copyArrayToList(Object[] os,List<T> ls){
+						//错误，T为类的泛型
+				}
+				
+				static <E> void copyArrayToList(E[] os,List<E> ls){ 
+						//泛型方法，正确的
+				}
+			泛型不能使用简单类型
+				GenList<int> nList = new GenList<int>(); //编译错误	
+			泛型类不能是异常类，也就是该泛型类不能继承自Throwable以及其子类
+				public class MyExpection<T> extends Exception{ }   //编译错误 
+			可以抛出（throws）泛型类，但catch的参数不能是泛型类。
+		
+		注意：
+			编译时类型的泛型和运行时类型的泛型一定要一致，没有多态。
+			支持泛型的集合，只能存放指定的类型，或者是指定类型的子类型。	
+
+	注释（元数据）：
+		描述代码的代码，作用是规范编译器的语法。
+
+		三种内置注释：
+			@Deprecated 所标注的程序元素是不推荐使用的
+			@Override 检查是否为合法的覆盖父类的方法
+			@SuppressWarnings 注释类或方法，忽略其中的某些类型的警告信息
+			
+		注释的三种类型：
+			标记注释：不需要任何参数
+				@Override
+				@Deprecated
+			单值注释：有一个值的注释
+				@注释名（值名=值）
+				值名一般为value，可以省略的，直接写值就可以
+				值的类型是有限制的，只能是以下几种：
+					8种基本数据类型
+					String
+					Class
+					Enum
+					Annotation
+					以及他们的数组
+			多值注释：每个值之间用逗号隔开
+			
+		四种元注释：java.lang.annotation中的类
+			元注释：注释注释的注释，用来限定注释的特征
+			@Terget	用来限定某个注释的使用范围，可以对什么元素进行注释
+			@Retention  用来描述注释的有效范围
+			@Inherited  用来描述某注释是否有继承性
+			@Documented  用来限定注释的信息是否能够进行文档化
+			
+		自定义注释：
+			在自定义注释时，要用元注释来进行描述。
+			如：
+				import java.lang.annotation.*;
+				@Target({ElementType.METHOD})
+				@Inherited
+				@Retention(RetentionPolicy.RUNTIME)
+				@Documented
+				public @interface InProgress {
+					String author();	//定义属性
+					String limited();
+				}
+				
+		解析注释：利用反射
+			1、Class.forName()
+			2、getMethod
+			3、判断是否有注释
+			4、getAnnotation
+			
+并发线程：
+	三个多线程包：
+		java.util.concurrent    包含了常用的多线程工具，是新的多线程工具的主体。 
+		java.util.concurrent.atomic    包含了不用加锁情况下就能改变值的原子变量。
+		java.util.concurrent.locks    包含锁定的工具。 
+		
+	Executor接口：
+		替代了Thread类，他可以创建定量的、动态的以及周期性的线程池。
+	ExecutorService接口：
+		线程池，用来存放线程来节省创建和销毁资源的消耗。
+		
+	Callable和Future接口：
+		Callable是类似于Runnable的接口，实现Callable接口的类和实现Runnable的类都是可被其它线程执行的任务。Callable和Runnable有几点不同：
+			Callable规定的方法是call()，而Runnable规定的方法是run(). 
+			Callable的任务执行后可返回值，而Runnable的任务是不能返回值的。 
+			call()方法可抛出异常，而run()方法是不能抛出异常的。 
+		运行Callable任务可拿到一个Future对象，通过Future对象可了解任务执行情况，可取消任务的执行，还可获取任务执行的结果。

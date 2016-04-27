@@ -1,0 +1,65 @@
+图形界面：
+	布局管理器：
+		CardLayout：卡片布局，面板重叠放置，只能看到一个，最先添加的会被显示出来，可以进行翻动
+			两种构造方法：
+				CardLayout() 
+          				创建一个间隙大小为 0 的新卡片布局。 
+				CardLayout(int hgap, int vgap) 
+          				创建一个具有指定的水平和垂直间隙的新卡片布局。 
+          		常用的方法：
+				previous(Container parent) 
+          				翻转到指定容器的前一张卡片。
+          			show(Container parent, String name) 
+          				翻转到已添加到此布局的具有指定 name 的组件
+          			next(Container parent) 
+          				翻转到指定容器的下一张卡片。
+          			first(Container parent) 
+          				翻转到容器的第一张卡片。	
+          			last(Container parent) 
+          				翻转到容器的最后一张卡片。
+          				
+          	GridBagLayout：增强版的网格布局，组件可以跨行跨列的进行布局。
+          		构造方法：
+          			GridBagLayout() 
+          				创建网格包布局管理器。
+          		注意：
+          			该布局管理器的具体实现需要借助GridBagConstraints类，利用GridBagConstraints类的属性对组件进行设置，具体内容查看API文档。
+          			
+	菜单项：
+		JMenuBar：菜单栏的实现，将JMenu对象添加到菜单栏以构造菜单
+			构造方法：
+				JMenuBar() 
+          				创建新的菜单栏。
+          				
+		JMenu：菜单的该实现是一个包含JMenuItem的弹出窗口
+			构造方法：
+				JMenu(String s) 
+          				构造一个新JMenu，用提供的字符串作为其文本。
+          				
+		JMenuItem：菜单中的项的实现，菜单项本质上是位于列表中的按钮
+			构造方法：
+				JMenuItem(String text) 
+          				创建带有指定文本的JMenuItem。
+          			
+AWT事件模型：
+	事件模型的三要素：
+		事件源(Object)：事件的产生者。
+		事件(EventObject)：描述发生了什么事情。  
+		事件监听(EventListener)：事件的处理者
+		关系：
+			事件只与事件源有关，与事件监听无关
+			一个事件源可以注册多个事件监听。
+			一个事件监听器可以在多个事件源中注册。
+			一个事件源可以就同一类事件注册多个事件监听。
+	
+	事件处理机制：委派式的处理机制(是一种松耦合)
+		组件自身会产生事件对象，但本身不一定负责处理，而是交给一个监听者去处理
+		
+	实现监听的步骤：
+		a. 实现监听接口implements XxxxListener
+		b. 重写方法actionPerformed(ActionEvent e) 
+		c. 注册监听addXxxxListener(ActionListener l) 
+		
+	适配器：一个重写了所有接口中方法的类
+		在java.awt.event包中，会有一些适配器，也就是把相应的XxxxListener，换成XxxxAdapter就是适配器。
+		在AWT中经常用匿名内部类来继承适配器做监听
