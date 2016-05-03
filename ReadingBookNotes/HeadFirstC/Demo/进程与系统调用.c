@@ -8,8 +8,14 @@
 6、系统调用出错时通常会返回-1，但不是绝对的
 7、系统调用在出错的同时将errno变量设为错误码
 8、exec（）函数比system()提供了更多的控制权 exec()函数替换当前进程
-9、fork()函数复制当前进程
-  
+9、fork()函数复制当前进程 fork() + exec() 创建子进程
+10、
+	execl() = 参数列表
+	execle() = 参数列表+环境变量
+	execlp() = 参数列表+搜素PATH
+	execcv() = 参数数组
+	execve() = 参数数组 + 环境变量
+	execvp() = 参数数组 + 搜素PYTH
 */
 
 #include<stdio.h>
