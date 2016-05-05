@@ -5,6 +5,12 @@ class Triangle
 	int b;
 	int c;
 	
+	void set(int i,int j,int k)
+	{
+		a = i;
+		b = j;
+		c = k;
+	}
 	int zhouchang() //不需要定义形参，因为zhouchang函数和属性a b c是一个有机整体，彼此当然可以相互访问
 	{
 		return a + b + c;
@@ -30,9 +36,12 @@ class TestTriangle
 //		Triangle * r = (Triangle * )malloc(sizeof(Triangle));
 		Triangle s = new Triangle();
 		
-		s.a = 3;
-		s.b = 4;
-		s.c = 5;
+	//	s.a = 3;  //此写法暴露事务中的成员 堆程序本身不安全
+	//	s.b = 4;
+	//	s.c = 5;
+	
+	//此写法 只是对外提供接口 把内部实现原理方法屏蔽
+	s.set(3,4,5);
 		
 		System.out.printf("%d    %f\n", s.zhouchang(), s.area());
 						//在java中double 和 float 都用%f输出
