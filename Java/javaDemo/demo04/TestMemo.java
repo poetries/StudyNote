@@ -24,7 +24,7 @@ class TestMemo
 {
 	public static void main(String[] args)
 	{
-		//aa是在栈里面分配的 是静态的  new A()是在堆里面分配的 是动态的
+		//aa是在栈里面分配的 是静态的  new A()是在堆里面分配的 是动态的  aa类名 A是类对象名 可以通过类名和类对象名访问
 		
 		A aa = new A();//(A*)malloc(sizeof(A));
 		//new A() 在堆中动态分配一块区域
