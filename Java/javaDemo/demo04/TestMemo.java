@@ -1,5 +1,21 @@
 class A
 {
+  //private int i;
+  /*
+  
+	  类的访问控制符有四种：
+			  public
+			  protect
+			  default
+			  private 
+			在一个类内部 所有的成员可以相互访问，访问控制符是透明的；访问控制符是针对外部访问而言的
+		外部访问包括两种方式：
+			通过类名访问内服成员
+			通过对象名访问内部成员
+		public  可通过外部访问方式访问内部public成员
+		private 不可以通过外部访问方式访问类内部public成员
+	*/
+		  
 	int i;
 	int j;
 }
@@ -23,5 +39,7 @@ class TestMemo
 		
 		System.out.printf("%d %d\n",aa.i,aa.j);
 		
+		//int i = 10;
 	}
 }
+
