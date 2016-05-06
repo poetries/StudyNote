@@ -3,14 +3,13 @@
 class A
 {
 	public int i = 20;
-	private static A aa = new A(); //aa 鏄疉瀵硅薄鐨勫睘鎬?static涓嶈兘鐪?鍚﹀垯getA()鏂规硶涓嶈兘璁块棶aa锛堥潤鎬佺殑涓嶈兘璁块棶闈為潤鎬佺殑锛?
-	
+	private static A aa = new A(); //aa 是A的属性 static不能省略（静态的不可以访问非静态的成员）	
 	private  A()  //private 把new禁止 使之不能造出对象
 	{
 		
 	}
 	
-	public static AgetA() //static涓€瀹氫笉鑳界渷鐣ワ紙鍘熷洜锛氬彲浠ヨ澶栭儴闈為潤鎬佺殑鎴愬憳璁块棶闈欐€佺殑鏂规硶锛?
+	public static AgetA() //static不能省略 因为：静态的不可以访问非静态的成员
 	{
 		return aa;
 	}
