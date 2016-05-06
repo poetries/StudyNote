@@ -1,3 +1,5 @@
+//本程序作用：计算A这个类造出了多少个对象
+
 class A
 {
 	private int i;
