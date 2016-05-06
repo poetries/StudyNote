@@ -22,7 +22,7 @@ public class testthis_1
 {
 	public static void main(String[] args)
 	{
-		Student aa = Student();
+		Student aa = new Student();
 		
 		
 	}
