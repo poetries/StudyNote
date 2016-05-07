@@ -7,7 +7,7 @@ class Student
 	
 	public Student(String name,int age)
 	{
-		this.name = name;
+		this.name = name; //右边的name是形参name  左边的this.name是属性name 其他也是一样
 		this.age = age;
 	}
 	
