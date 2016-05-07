@@ -15,6 +15,10 @@ public class A //public 加上才对 只有共有的类才可以被另一个包�
 
 package com.ruide;
 
+//import zhangsan.lisi.*;  //导入包
+
+import zhangsan.lisi.A; //导入A这个类 不用导入整个包
+
 class B 
 {
 	public static void main(String[] args)
@@ -23,6 +27,7 @@ class B
 		aa.f();
 	}
 }
+
 
 //编译方法：DOS下： javac -d . A.java  B.java  (-d .)--》在当前目录下生成包路径
 //运行： java com.ruide.B
