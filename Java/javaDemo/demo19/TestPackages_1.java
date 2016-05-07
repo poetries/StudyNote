@@ -41,5 +41,9 @@ class  TestPackages
 	
 		如：不在当前目前下运行程序必须set classpath = 当前目录路径名 （然后在运行即可）
 				
+	6、java zhangsan.lisi.TestPackages解释：
+		
+		先检查当前目录下是否有zhangsan/sili这个包（包即文件夹）如果有在检测该包下是否有
+		zhangsan.lisi.TestPackagesz这个类 如果没有 编译器就会去classpath设置的路径下查找 找不到 则编译失败
 
 */
