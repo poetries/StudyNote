@@ -1,6 +1,6 @@
 //A.java文件
 
-public class A 
+class A 
 {
 	public void f()
 	{
