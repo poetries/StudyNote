@@ -28,7 +28,7 @@ class B
 	}
 }
 
-
+//单独编译时必须先编译A.java 在编译B.java 否则会出错
 //编译方法：DOS下： javac -d . A.java  B.java  (-d .)--》在当前目录下生成包路径
 //运行： java com.ruide.B
 
