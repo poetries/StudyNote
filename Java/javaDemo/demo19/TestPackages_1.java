@@ -39,7 +39,7 @@ class  TestPackages
 		
 	5、如果不在当前目录下运行程序，则必须保证class文件的最上层目录的父目录位于classpath下
 	
-		如：不在当前目前下运行程序必须set classpath = 当前目录路径名 （然后在运行即可）
+		如：不在当前目前下运行程序必须set classpath = （此处不能有空格否则失败）当前目录路径名（父目录）(结尾加分号) （然后在运行即可）
 				
 	6、java zhangsan.lisi.TestPackages解释：
 		
