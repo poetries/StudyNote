@@ -5,7 +5,7 @@ package zhangsan.lisi;
 
 public class A //public 加上才对 只有共有的类才可以被另一个包访问
 {
-	public void f()
+	public void f()//public不能省 可以在另一个包中通过对象名访问
 	{
 		System.out.printf("AAAA");
 	}
