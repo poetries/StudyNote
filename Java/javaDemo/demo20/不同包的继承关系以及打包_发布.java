@@ -83,6 +83,20 @@ class M
 			}
 		}
 
-
+	jar使用：
+	
+			格式：
+				jar -cvf 生成要压缩的包名.jar *
+			
+			举例：
+				jar cvf c.jar *
+				功能：把当前路径下所有的文件即文件夹下所有的内容打包
+				
+				jar -tf c.jar
+				功能：在DOS下显示c.jar这个包解压够的文件内容
+				
+				jar -xf d:\c.jar
+				功能：把d:\c.jar 这个文件中的内容加压到当前目录下
+				
 
 */
