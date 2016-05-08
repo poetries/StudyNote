@@ -1,3 +1,5 @@
+//输入数据不合法异常
+
 import java.util.Scanner; //导入sum提供的包
 
 public class TestExcep_3 
