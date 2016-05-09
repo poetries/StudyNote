@@ -1,6 +1,36 @@
+/* 	创建线程的方法：
+	
+	第一种：	
+			1、创建一个集成Thread的类（假定A类），并重写Thread中的run方法
+			
+			2、构造一个A类对象，假设aa
+			
+			3、调用aa的start方法【start方法时从Thread集成过来的】
+			
+			
+			
+			
+			
+	注意问题：
+
+		1、Thread中的start()方法的功能是创建一个新的进程，并调用该线程的run()方法，直接调用run()方法不会创建新的进程
+		
+		2、执行一个线程实际就是执行该线程run方法中的代码（这个重要）
+		
+		3、执行完aa.start()后并不表示aa对应的线程就一定会立即执行 aa.start()执行完后只是表示aa线程具有了可立即被CPU执行的资格
+		   但由于想抢占CPU执行的线程很多，CPU并不一定会立即去执行aa所对应的线程
+		   
+		4、一个Thread对象且只能代表一个线程 一个Thread对象不能调用两次start()方法，否则会抛出java.lang.IIegalThreadStateException异常
+		
+		
+			
+
+ */
+
+ //创建一个集成Thread的类
 class A extends Thread //A 继承了Thread类中的run方法 并且重写了run
 {
-	public void run()//必须是run
+	public void run()//重写run()方法
 	{
 		while(true)
 		{
@@ -13,8 +43,8 @@ public class TestThread_1
 {
 	public static void main(String[] args)
 	{
-		A aa = new A();
-		a.start();//会开辟两个线程 自动aa对象里面的run方法 star语句--开启一个线程
+		A aa = new A();//构造一个A类对象
+		a.start();//调用aa的start方法，start方法会创建一个新的进程，并自动调用aa对象的run()方法
 		
 		while(true)
 		{
