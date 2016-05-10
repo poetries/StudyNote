@@ -34,7 +34,7 @@ public class TestTextFile_1
 		f.add(bn);
 		f.add(tf3);
 		
-		//f.addWindowListener(new B())
+		f.addWindowListener(new B());//关闭窗口
 		
 		bn.addActionListener(new MyMonitor());
 		
@@ -43,6 +43,16 @@ public class TestTextFile_1
 		
 		
 		
+	}
+}
+
+//关闭窗口
+
+class B extends WindowAdapter //e接收aa发送的事件
+{
+	public void  windowClosing(WindowEvent e) //把接口的抽象方法重写
+	{
+		System.exit(-1);
 	}
 }
 
