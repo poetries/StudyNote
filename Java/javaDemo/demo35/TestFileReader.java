@@ -5,6 +5,8 @@ public class TestFileReader
 {
 	public static void main(String[] args) throws Exception
 	{
+		//FileReader这个类叫做流
+		//流就是程序和设备之间连接起来的一根用于数据传输的管道
 		FileReader fr = new FileReader("F:\\workspace\\java\\TestFileReader.java");
 		int ch;
 		
