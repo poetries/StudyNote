@@ -8,7 +8,7 @@ public class TestFileReader
 		FileReader fr = new FileReader("F:\\workspace\\java\\TestFileReader.java");
 		int ch;
 		
-		ch = fr.read();
+		ch = fr.read();//read返回值一定是整型数据 内部有一个文件指针 读完一个自动下移一个
 		while(-1!=ch)//-1表示文件读到结尾了
 		{
 			System.out.printf("%c",ch);
