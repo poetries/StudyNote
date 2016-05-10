@@ -8,7 +8,7 @@ public class TestFileReader
 		//FileReader这个类叫做流
 		//流就是程序和设备之间连接起来的一根用于数据传输的管道
 		//fr是流对象 fr是管道 read()相当于管道上的按钮
-		//流就是一根带有按钮的管道
+		//流就是一根带有按钮的管道 通过不同按钮调用不同的方法
 		FileReader fr = new FileReader("F:\\workspace\\java\\TestFileReader.java");
 		int ch;
 		
