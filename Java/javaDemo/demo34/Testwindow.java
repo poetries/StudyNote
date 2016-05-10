@@ -1,5 +1,3 @@
-//	匿名类
-
 import java.awt.*;
 import java.awt.event.*;
 
@@ -10,6 +8,7 @@ public class Testwindow
 		Frame f = new Frame();
 		f.setSize(300,300);
 		
+		//定义了一个实现抽象类中所有实现方法的对象
 		//匿名类 凡是new出来的 不付给一个变量就匿名
 		f.addWindowListener(
 			new WindowAdapter()
