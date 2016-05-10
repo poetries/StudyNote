@@ -1,3 +1,5 @@
+//	匿名类
+
 import java.awt.*;
 import java.awt.event.*;
 
