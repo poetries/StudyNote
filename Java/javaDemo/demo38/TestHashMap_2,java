@@ -1,0 +1,64 @@
+import java.util.*;
+
+class Student
+{
+	private int id;
+	private String name;
+	private int age;
+	
+	public Student()
+	{
+	}
+	
+	public Student(int id, String name, int age)
+	{
+		this.id = id;
+		this.name = name;
+		this.age = age;
+	}
+	
+	public int hashCode()
+	{
+		return this.name.hashCode()*id*age;
+	}	
+	
+	public boolean equals(Object o)
+	{
+		Student s = (Student)o;
+		return this.name.equals(s.name) && this.id==s.id && this.age==s.age;	
+	}	
+
+	public String toString()
+	{
+		return id + "  " + name + "  " + age;
+	}
+}
+
+public class TestHashMap_2
+{
+	public static void main(String[] args){
+		HashMap hm = new HashMap();
+		hm.put(1001, new Student(1001, "zhangsan", 20));  //自动封装
+		hm.put(1003, new Student(1003, "lisi", 30)); //自动封装
+		hm.put(new Integer(1004), new Student(1004, "wangwu", 10));
+		hm.put(1002, new Student(1002, "baichi", 20)); //自动封装
+		
+		//遍历所有的元素
+		System.out.println("hm容器中所有的元素是:");
+		Set s = hm.keySet();  //获取到当前容器键的集合，实际就是Integer对象的集合
+		Iterator it = s.iterator();//通过iterator()方法返回第一个指向s这个容器中第一个关键字的指针it
+		while (it.hasNext()){//it.hasNext判断it所指向s这个集合中是否有下一个元素 里面每一个元素是key
+			//int Key = (Integer)it.next();   // (Integer) 不能省， 利用了自动拆分技术      
+			Integer Key = (Integer)it.next();//next()返回的关键字是Object类型 转换为子类的（因为关键字定义为整型Integer类型）
+			System.out.println(hm.get(Key));
+		}
+		
+		System.out.println("直接查找某一元素");
+		System.out.println( hm.get(1003) );	
+		System.out.println( hm.get(1005) );	  //如果找不到 则直接返回null，而不是抛出异常 			
+	}
+}
+
+/*
+	无论是什么容器，它内部所有的元素都必须是对象，不能是基本类型的数据（放基本类型的数据，它自动默认封装）--容器里面要放对象--因为有了自动封装
+*/
