@@ -19,14 +19,37 @@
 */
 
 /*
-	问题一：什么类需要重写：
+	问题一：什么类需要重写：（需要在这种累类里面放对象）
+	
+			放到hashSet里面一定要重写
+			HashMap
+			HashTable
+			（凡是前面带Hash的都需要重写）
+			
+			放到list里面不需要重写
+			放大TreeSet里面不需要重写
 	
 	问题二：为什么要重写
-
+	
+	
+	
+	
+	
+	
+	什么容器必须得重写equals方法和hashCode方法：
+	
+		添加到TreeSet中的对象和添加到TreeMap中的键都可以不重写equals()方法和hashCode()方法 
+		更准确的讲：添加到TreeSet中的额对象和添加到TreeMap中的键是否重写equals()方法 和equals()方法
+		以及怎么样重写equals()方法和hashcode方法，对程序没有影响
+		
+		
+	Hashtable HashSet hashMap都必须同时实现equals方法和hashcode方法 TreeSet和TreeMap则不需要实现equals方法和hashCode方法
+	
 */
+
 import java.util.*;
 
-class Student //implements Collection 
+class Student 
 {
 	private int id;
 	private String name;
