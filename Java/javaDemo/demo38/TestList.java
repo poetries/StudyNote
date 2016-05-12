@@ -35,7 +35,7 @@ public class TestList
 {
 	public static void main(String[] args)
 	{
-		List L= new ArrayList();
+		List L= new ArrayList();//List不保证元素重复 需要使用set接口
 		L.add(new  Student(11,"张建"));
 		L.add(new Student(10,"张三"));
 		L.add(new Student(13,"李四"));
@@ -46,3 +46,30 @@ public class TestList
 		System.out.println(L);
 	}
 }
+
+/*
+	为何要使用Comparable接口：
+	
+	基本类型数据和String类型数据，他们彼此的比较标准，java语言已经提供好了
+	
+	用户自定义类对象之间比较的标准java语言本身是没有提供的
+	
+	所以如果一个容器中含有用户自定义类型的数据，需要对容器中元素进行排序，或者查找某一元素时，须得制定容器中元素与元素之间比较的标准
+	
+	凡是需要进行对象比较、排序场合均可考虑实现Comparable接口
+
+	Comparable接口介绍：
+	
+		1、所有课排序的类都实现了java.lang.Comparable接口,Comparable接口中只有一个方法
+		
+			public int Compare(Object obj)
+			
+				返回0表示this == obj
+				返回整数表示 this > obj
+				返回负数this < obj
+				
+			实现了Comparable接口的类通过实现了compareTo方法从而确定了该类对象的排序方式
+	
+	
+
+*/
