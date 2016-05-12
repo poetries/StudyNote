@@ -29,12 +29,36 @@
 			放到list里面不需要重写
 			放大TreeSet里面不需要重写
 	
-	问题二：为什么要重写
+	问题二：为什么要重写equlas()和hashCode()方法 
+	
+			预备知识：
+				散列码：
+					Object中的hashCode方法返回该对象的真是地址的整数化表示，这个形象的不是真是的地址的整数值就是哈希码
+					
+				向HashSet中添加对象时，HashSet先通过该对象的hascode()计算出相应的桶，然后咋诶根据equals方法找到相应的对象，如果容器中已经存在该对象，则不再添加，不存在添加进去
 	
 	
+	问题三：怎么样重写equals()和hashCode()方法
 	
-	
-	
+			如何重写equals()
+			
+					public boolean equals(Object obj)
+					{
+						如果this和obj的内容一模一样的
+							返回true
+						否则
+							返回false
+					}
+				
+			如何重写hashCode()
+			
+					public int hascode()
+					{
+						return 当前类中的基本类型数据对象的hashCode()方法
+						
+					}
+					
+
 	
 	什么容器必须得重写equals方法和hashCode方法：
 	
