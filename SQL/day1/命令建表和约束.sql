@@ -75,17 +75,21 @@ create table student
 	stu_email nvarchar(100) not null ,
 	stu_address nvarchar(100),
 	stu_sal int check(stu_sal>=1000 and stu_sal<=10000),
-	stu_sex nchar(1) default '男'
+	stu_sex nchar(1) default '女'
 	
 )
 
-insert student(stu_name,stu_email,stu_address,stu_sal) values('lianying','yongxuan@163.com','广西北海',2000);
+insert student(stu_name,stu_email,stu_address,stu_sal) values('连英','yongxuan@163.com','广西北海',2000);
 insert student(stu_name,stu_email,stu_address,stu_sal,stu_sex) values('小明','yongxuan@163.com','广西南宁',3000,'男');
 insert student(stu_name,stu_email,stu_address,stu_sal) values('小红','yongxuan@163.com','广西柳州',4000);
 insert student(stu_name,stu_email,stu_address,stu_sal,stu_sex) values('小李','yongxuan@163.com','广西玉林',5000,'男');
 insert student(stu_name,stu_email,stu_address,stu_sal,stu_sex) values('小白','yongxuan@163.com','广西桂林',6000,'男');
 insert student(stu_name,stu_email,stu_address,stu_sal,stu_sex) values('大白','yongxuan@163.com','广西钦州',7000,'男');
 insert student(stu_name,stu_email,stu_address,stu_sal) values('小曼','yongxuan@163.com','广西贵港',8000);
+insert student(stu_name,stu_email,stu_sal) values('小轩','yongxuan@163.com',9000);
+
+-- 删除表
+drop table student
 
 --查询语句
 select * from student
