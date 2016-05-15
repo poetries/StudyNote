@@ -31,7 +31,7 @@ create table student
 )
 
 -- 插入 数据
-insert into student(stu_id,stu_sal) values (1,1000);
+insert into student(stu_id,stu_sal) values (1,1000); --  student(stu_id,stu_sal)指定为哪一些字段赋值
 insert into student values(2,5000,'女');
 insert into student values(3,5000,'女');
 insert into student values(4,5000,'女');
@@ -56,7 +56,6 @@ insert into student2 values(4,6000,'男','null')--ok  唯一键允许为空
 
 
 
-
 drop table student4; --删除student4
 
 create table student4
@@ -72,13 +71,24 @@ create table student4
 create table student
 (
 	stu_id int primary key identity, 
-	stu_name nvarchar(50) unique not null,
-	stu_email nvarchar(50) not null ,
-	stu_address nvarchar(50),
-	stu_sal int check(stu_sal>=1000 and stu_sal<=4000),
+	stu_name nvarchar(100) unique not null,
+	stu_email nvarchar(100) not null ,
+	stu_address nvarchar(100),
+	stu_sal int check(stu_sal>=1000 and stu_sal<=10000),
 	stu_sex nchar(1) default '男'
 	
 )
+
+insert student(stu_name,stu_email,stu_address,stu_sal) values('lianying','yongxuan@163.com','广西北海',2000);
+insert student(stu_name,stu_email,stu_address,stu_sal,stu_sex) values('小明','yongxuan@163.com','广西南宁',3000,'男');
+insert student(stu_name,stu_email,stu_address,stu_sal) values('小红','yongxuan@163.com','广西柳州',4000);
+insert student(stu_name,stu_email,stu_address,stu_sal,stu_sex) values('小李','yongxuan@163.com','广西玉林',5000,'男');
+insert student(stu_name,stu_email,stu_address,stu_sal,stu_sex) values('小白','yongxuan@163.com','广西桂林',6000,'男');
+insert student(stu_name,stu_email,stu_address,stu_sal,stu_sex) values('大白','yongxuan@163.com','广西钦州',7000,'男');
+insert student(stu_name,stu_email,stu_address,stu_sal) values('小曼','yongxuan@163.com','广西贵港',8000);
+
+--查询语句
+select * from student
 
 
 
