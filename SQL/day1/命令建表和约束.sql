@@ -56,3 +56,17 @@ insert into student2 values(4,6000,'男','null')--ok  唯一键允许为空
 
 
 
+
+drop table student4; --删除student4
+
+create table student4
+(
+	-- 尽量用没有实际意义的编号 标识当主键 (记住不要业务逻辑当主键)
+	stu_id int primary key identity, --identity 自增（主键的值不需要录入 让它自动增长）
+	stu_name nvarchar(50) unique not null,
+	stu_email nvarchar(50) not null ,
+	stu_address nvarchar(50)
+	
+)
+
+
