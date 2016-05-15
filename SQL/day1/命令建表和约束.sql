@@ -69,4 +69,16 @@ create table student4
 	
 )
 
+create table student
+(
+	stu_id int primary key identity, 
+	stu_name nvarchar(50) unique not null,
+	stu_email nvarchar(50) not null ,
+	stu_address nvarchar(50),
+	stu_sal int check(stu_sal>=1000 and stu_sal<=4000),
+	stu_sex nchar(1) default '男'
+	
+)
+
+
 
